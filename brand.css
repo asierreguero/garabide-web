@@ -1,0 +1,244 @@
+/* GARABIDE · Brand Stylesheet v1.0
+   Paleta exacta. Butler: Fabian De Smet. No se incluyen fuentes.
+   Cargar este archivo antes de los estilos específicos del proyecto. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+/* BUTLER: obtén tus archivos y configura sus rutas reales según su licencia.
+   Descomenta estas reglas cuando dispongas de los archivos correspondientes.
+@font-face {
+  font-family: 'Butler';
+  src: url('/fonts/butler/Butler-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Butler';
+  src: url('/fonts/butler/Butler-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+   Sin Butler se muestra la serif de respaldo; no es el logo definitivo.
+   Manrope requiere conexión a Google Fonts y permiso en la CSP del sitio. */
+
+:root {
+  --garabide-ink: #192A3A;
+  --garabide-lavender: #918CA8;
+  --garabide-cream: #FAF7F0;
+  --garabide-mist: #9ABAC5;
+  --garabide-charcoal: #262626;
+  --color-background: var(--garabide-cream);
+  --color-surface: var(--garabide-cream);
+  --color-text: var(--garabide-charcoal);
+  --color-heading: var(--garabide-ink);
+  --color-primary: var(--garabide-ink);
+  --color-on-primary: var(--garabide-cream);
+  --color-accent: var(--garabide-lavender);
+  --color-secondary: var(--garabide-mist);
+  --color-border: rgba(25, 42, 58, .12);
+  --color-control-border: var(--garabide-ink);
+  --color-focus: var(--garabide-ink);
+  --font-brand: 'Butler', 'Times New Roman', serif;
+  --font-body: 'Manrope', Arial, sans-serif;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.5rem;
+  --text-display: 4.5rem;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(25, 42, 58, .06);
+  --shadow-md: 0 8px 30px rgba(25, 42, 58, .10);
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --container: 1200px;
+  color-scheme: light;
+}
+
+/* TEMAS: aplicar data-theme="dark" al html o a una sección.
+   Las secciones claras restablecen sus tokens dentro de un tema oscuro. */
+[data-theme='dark'], .section--ink, .bg-ink, .bg-charcoal {
+  --color-background: var(--garabide-ink);
+  --color-surface: var(--garabide-ink);
+  --color-text: var(--garabide-cream);
+  --color-heading: var(--garabide-cream);
+  --color-primary: var(--garabide-cream);
+  --color-on-primary: var(--garabide-ink);
+  --color-border: rgba(250, 247, 240, .24);
+  --color-control-border: var(--garabide-mist);
+  --color-focus: var(--garabide-mist);
+  color-scheme: dark;
+}
+[data-theme='light'], .section--cream, .section--lavender, .section--mist,
+.bg-cream, .bg-lavender, .bg-mist {
+  --color-background: var(--garabide-cream);
+  --color-surface: var(--garabide-cream);
+  --color-text: var(--garabide-charcoal);
+  --color-heading: var(--garabide-ink);
+  --color-primary: var(--garabide-ink);
+  --color-on-primary: var(--garabide-cream);
+  --color-border: rgba(25, 42, 58, .12);
+  --color-control-border: var(--garabide-ink);
+  --color-focus: var(--garabide-ink);
+  color-scheme: light;
+}
+[data-theme] { background: var(--color-background); color: var(--color-text); }
+
+/* RESET */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--color-background); color: var(--color-text);
+  font: 400 var(--text-base)/1.65 var(--font-body); -webkit-font-smoothing: antialiased; }
+img, svg, video { display: block; max-width: 100%; height: auto; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+p, ul, ol { margin-block: 0 var(--space-4); }
+p { max-width: 70ch; }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+[hidden] { display: none !important; }
+
+/* LOGO: escribir «garabide» en minúsculas; no deformar ni añadir tracking.
+   La zona 1X se calcula sobre la altura real de la g del arte final. */
+.garabide-logo { display: inline-block; font: 500 2.4rem/1 var(--font-brand);
+  font-synthesis: none; letter-spacing: 0; color: var(--color-heading); text-decoration: none; }
+.garabide-logo--light { color: var(--garabide-cream); }
+.garabide-logo--lavender { color: var(--garabide-lavender); }
+.garabide-logo:hover { color: var(--color-heading); text-decoration: none; }
+.garabide-logo--light:hover { color: var(--garabide-cream); }
+.garabide-logo--lavender:hover { color: var(--garabide-lavender); }
+
+/* JERARQUÍA: valores máximos de escritorio; escala fluida en móvil. */
+h1, h2, h3, h4, h5, h6 { margin: 0 0 var(--space-4); color: var(--color-heading); overflow-wrap: break-word; }
+h1, h2, .display { font-family: var(--font-brand); font-weight: 500; font-synthesis: none; }
+.display { font-size: clamp(2.75rem, 7vw, var(--text-display)); line-height: 1.05; letter-spacing: -.025em; }
+h1 { font-size: clamp(2.5rem, 6vw, var(--text-4xl)); line-height: 1.1; letter-spacing: -.025em; }
+h2 { font-size: clamp(2rem, 4vw, var(--text-3xl)); line-height: 1.15; letter-spacing: -.02em; }
+h3, h4, h5, h6 { font-family: var(--font-body); font-weight: 600; }
+h3 { font-size: var(--text-2xl); line-height: 1.25; }
+h4 { font-size: var(--text-xl); line-height: 1.3; }
+h5 { font-size: var(--text-lg); line-height: 1.4; }
+h6 { font-size: var(--text-base); line-height: 1.4; }
+.body-large { font-size: var(--text-lg); line-height: 1.65; }
+small, .text-small { font-size: var(--text-sm); font-weight: 500; line-height: 1.5; }
+.eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ENLACES: el hover conserva contraste y añade grosor, no solo color. */
+a { color: var(--color-heading); text-decoration: underline; text-underline-offset: .2em;
+  text-decoration-thickness: 1px; transition: text-decoration-thickness var(--transition-fast); }
+a:hover { text-decoration-thickness: 2px; }
+
+/* BOTONES: usar <button> para acciones y <a> para navegación. */
+.button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 48px; padding: .75rem 1.4rem; border: 1px solid transparent;
+  border-radius: var(--radius-md); background: var(--color-primary); color: var(--color-on-primary);
+  font: 600 .95rem/1.4 var(--font-body); text-align: center; text-decoration: none; cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast); }
+.button--primary { background: var(--color-primary); color: var(--color-on-primary); }
+.button--secondary { background: var(--garabide-lavender); color: var(--garabide-ink); }
+.button--outline { background: transparent; color: var(--color-heading); border-color: currentColor; }
+.button:hover { background: var(--garabide-mist); color: var(--garabide-ink); text-decoration: none; }
+.button--outline:hover { background: var(--color-primary); color: var(--color-on-primary); }
+.button:active { transform: translateY(1px); }
+.button:disabled, .button[aria-disabled='true'] { opacity: .5; cursor: not-allowed; transform: none; }
+/* aria-disabled comunica el estado; la aplicación debe impedir la activación del enlace. */
+
+/* TARJETAS */
+.card { min-width: 0; padding: var(--space-6); background: var(--color-surface);
+  color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.card__title { margin: 0 0 var(--space-3); font: 600 var(--text-xl)/1.3 var(--font-body); color: var(--color-heading); }
+.card > :last-child { margin-bottom: 0; }
+.card--accent { background: var(--garabide-lavender); --color-text: var(--garabide-ink);
+  --color-heading: var(--garabide-ink); --color-primary: var(--garabide-ink);
+  --color-on-primary: var(--garabide-cream); --color-focus: var(--garabide-ink); }
+
+/* FORMULARIOS: labels visibles y mensajes enlazados mediante aria-describedby.
+   .input para campos de texto; no se aplica a checkboxes, radio, range o hidden. */
+.field { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); }
+label, .field__label { font-weight: 600; }
+.input, input:where(:not([type]), [type='text'], [type='email'], [type='password'],
+  [type='search'], [type='tel'], [type='url'], [type='number'], [type='date']), textarea, select {
+  width: 100%; min-width: 0; min-height: 48px; padding: .75rem 1rem;
+  background: var(--color-surface); color: var(--color-text);
+  border: 1px solid var(--color-control-border); border-radius: var(--radius-md); font-size: 1rem;
+}
+textarea { min-height: 140px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: var(--color-text); opacity: .75; }
+input[type='checkbox'], input[type='radio'] { width: 1.25rem; height: 1.25rem; accent-color: var(--color-primary); }
+input:disabled, textarea:disabled, select:disabled { opacity: .6; cursor: not-allowed; }
+[aria-invalid='true'] { border-width: 2px; border-style: dashed; }
+.field__hint, .field__error { font-size: var(--text-sm); margin: 0; }
+.field__error { font-weight: 600; } /* Añadir texto «Error: …», no depender del color. */
+
+/* BADGES */
+.badge { display: inline-flex; align-items: center; padding: .35rem .7rem;
+  background: var(--garabide-mist); color: var(--garabide-ink); border-radius: var(--radius-pill);
+  font-size: var(--text-xs); font-weight: 600; line-height: 1.5; letter-spacing: .02em; }
+.badge--accent { background: var(--garabide-lavender); }
+
+/* SECCIONES, FONDOS Y COMPOSICIÓN */
+.section { padding-block: var(--space-9); color: var(--color-text); }
+.section--cream, .bg-cream { background: var(--garabide-cream); color: var(--color-text); }
+.section--ink, .bg-ink { background: var(--garabide-ink); color: var(--color-text); }
+.section--lavender, .bg-lavender { background: var(--garabide-lavender); color: var(--color-text); }
+.section--mist, .bg-mist { background: var(--garabide-mist); color: var(--color-text); }
+.bg-charcoal { background: var(--garabide-charcoal); color: var(--color-text); }
+.container { width: min(calc(100% - 3rem), var(--container)); margin-inline: auto; }
+.hero { min-height: 80vh; display: flex; align-items: center; padding-block: var(--space-9); }
+.hero__title { max-width: 900px; }
+.hero__description { max-width: 620px; margin-top: var(--space-5); font-size: var(--text-lg); }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-top: var(--space-6); }
+.grid { display: grid; gap: var(--space-5); }
+.grid--cards { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+
+/* UTILIDADES: lavanda/celeste como texto solo en fondos oscuros con contraste. */
+.text-ink { color: var(--garabide-ink); }
+.text-lavender { color: var(--garabide-lavender); }
+.text-mist { color: var(--garabide-mist); }
+.text-cream { color: var(--garabide-cream); }
+.text-charcoal { color: var(--garabide-charcoal); }
+.text-center { text-align: center; }
+.font-brand { font-family: var(--font-brand); font-weight: 500; font-synthesis: none; }
+.font-body { font-family: var(--font-body); }
+.stack > * + * { margin-top: var(--space-5); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.w-full { width: 100%; }
+.mx-auto { margin-inline: auto; }
+.m-0 { margin: 0; }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.p-6 { padding: var(--space-6); }
+.rounded { border-radius: var(--radius-md); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+::selection { background: var(--garabide-lavender); color: var(--garabide-ink); }
+
+/* RESPONSIVE Y MOVIMIENTO */
+@media (max-width: 768px) {
+  :root { --space-9: 4rem; }
+  .container { width: min(calc(100% - 2rem), var(--container)); }
+  .hero { min-height: auto; }
+  .card { padding: var(--space-5); }
+}
+@media (max-width: 480px) { .hero__actions { align-items: stretch; flex-direction: column; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .button:active { transform: none; }
+}
