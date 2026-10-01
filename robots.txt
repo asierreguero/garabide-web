@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /gracias.html
-Disallow: /privacidad.html
+
 Sitemap: https://garabide.com/sitemap.xml

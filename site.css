@@ -277,3 +277,24 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .arrow-icon{width:18px!important;height:18px!important;min-width:18px;display:inline-block;fill:none;stroke:currentColor;stroke-width:1.8}
 
 .form-status{padding:16px;border:1px solid currentColor;border-radius:8px;margin-top:16px}.submit-button:disabled{opacity:.65;cursor:wait}
+
+/* FAQ: native disclosure controls, readable without JavaScript. */
+.faq-section{background:var(--cream);border-top:1px solid rgba(25,42,58,.15)}
+.faq-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:72px;align-items:start}
+.faq-intro h2{font-size:clamp(2rem,3.5vw,3.2rem);line-height:1.15;margin:20px 0}
+.faq-intro>p:not(.eyebrow){max-width:34ch;margin-bottom:20px}
+.faq-intro .text-link{display:inline-block}
+.faq-list{border-top:1px solid rgba(25,42,58,.25)}
+.faq-item{border-bottom:1px solid rgba(25,42,58,.25)}
+.faq-item summary{display:flex;align-items:center;gap:24px;justify-content:space-between;cursor:pointer;padding:24px 0;list-style:none;color:var(--ink)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary h3{font-family:var(--font-ui,Manrope,sans-serif);font-size:1rem;line-height:1.55;font-weight:600;margin:0;letter-spacing:0}
+.faq-item summary:focus-visible{outline:2px solid var(--ink);outline-offset:5px;border-radius:4px}
+.faq-toggle{flex:0 0 20px;width:20px;height:20px;position:relative}
+.faq-toggle::before,.faq-toggle::after{content:'';position:absolute;top:9px;left:3px;width:14px;height:2px;background:currentColor}
+.faq-toggle::after{transform:rotate(90deg)}
+.faq-item[open] .faq-toggle::after{transform:rotate(0)}
+.faq-answer{padding:0 36px 24px 0;color:var(--charcoal);font-size:.95rem;line-height:1.8}
+.faq-answer p{margin:0;max-width:65ch}
+@media(max-width:1100px){.faq-layout{gap:40px}.navigation{gap:18px}}
+@media(max-width:800px){.faq-layout{grid-template-columns:1fr;gap:32px}.faq-intro>p:not(.eyebrow){max-width:50ch}.faq-answer{padding-right:12px}.faq-item summary{gap:16px;padding:22px 0}}
