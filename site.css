@@ -307,6 +307,6 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .site-header .language-switch a:hover{background:var(--cream);color:var(--ink)}
 .site-header .menu-toggle:not([hidden]){background:transparent;color:var(--cream);border-color:rgba(250,247,240,.55)}
 .site-header a:focus-visible,.site-header button:focus-visible{outline:2px solid var(--cream);outline-offset:5px}
-.outcome-word{color:var(--cream)}
-.outcome-word .brand-outlines path{stroke:var(--charcoal);stroke-width:18;stroke-linejoin:round;paint-order:stroke fill}
+.outcome,.outcome-word{color:var(--charcoal)}
+.outcome-word .brand-outlines path{stroke:none}
 .outcome .eyebrow,.outcome-bottom{font-weight:600}
