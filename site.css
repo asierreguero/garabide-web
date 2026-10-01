@@ -272,3 +272,12 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 
 @media(max-width:800px){.site-header .navigation{order:4}}
 @media(max-width:360px){.site-header .menu-toggle:not([hidden]){padding:8px;gap:6px}}
+
+/* A separate utility row keeps language controls out of the main navigation. */
+.language-bar{border-bottom:1px solid rgba(25,42,58,.1)}
+.language-bar>.container{display:flex;justify-content:flex-end}
+.language-bar .language-switch{margin:0;order:0;font-size:.68rem;gap:8px}
+.language-bar .language-switch a{min-height:32px;padding:0 4px}
+.header-inner{min-height:90px}
+.arrow-icon{width:18px!important;height:18px!important;min-width:18px;display:inline-block;fill:none;stroke:currentColor;stroke-width:1.8}
+@media(max-width:800px){.header-inner{min-height:74px}.language-bar .language-switch a{min-height:36px}.site-header .garabide-logo{font-size:32px}.site-header .menu-toggle{margin-left:auto}}
