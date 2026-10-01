@@ -1,5 +1,5 @@
 'use strict';
-// Progressive enhancement: navigation and the contact form also work without JS.
+// Accessible navigation and localized contact feedback.
 document.documentElement.classList.add('js-enabled');
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.navigation');
@@ -31,9 +31,44 @@ document.querySelectorAll('[data-interest]').forEach(link => {
     if (message && !message.value.trim()) message.value = document.documentElement.lang === "eu" ? `${link.dataset.interest}: nire enpresarako irtenbide bat interesatzen zait.\n\n` : `Me interesa una solución de ${link.dataset.interest.toLowerCase()} para mi empresa.\n\n`;
   });
 });
-// Native POST hands delivery and spam verification to FormSubmit. No fake success state.
+
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
-  const next = contactForm.querySelector('[name="_next"]');
-  if (next && /^https?:$/.test(window.location.protocol)) next.value = new URL(document.documentElement.lang === 'eu' ? 'eskerrik-asko.html' : 'gracias.html', window.location.href.split('#')[0]).href;
+  const eu = document.documentElement.lang === 'eu';
+  const status = contactForm.querySelector('.form-status');
+  const button = contactForm.querySelector('.submit-button');
+  const originalButton = button.innerHTML;
+  let pending = false;
+  button.disabled = false;
+  contactForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (pending || !contactForm.reportValidity()) return;
+    pending = true; button.disabled = true;
+    button.textContent = eu ? 'Bidaltzen…' : 'Enviando…';
+    status.hidden = false;
+    status.textContent = eu ? 'Zure kontsulta bidaltzen ari gara.' : 'Estamos enviando tu consulta.';
+    const form = new FormData(contactForm);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 25000);
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, signal:controller.signal,
+        body: JSON.stringify({nombre:form.get('nombre'),empresa:form.get('empresa'),email:form.get('email'),mensaje:form.get('mensaje'),website:form.get('website'),privacidad:form.has('privacidad'),lang:eu?'eu':'es'})
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true || result.code !== 'sent') {
+        throw new Error(response.status === 429 ? 'rate' : response.status === 400 ? 'invalid' : 'unavailable');
+      }
+      status.textContent = eu ? 'Eskerrik asko! Zure kontsulta bidali da. Posta elektronikoz erantzungo dizugu.' : '¡Gracias! Tu consulta se ha enviado. Te responderemos por correo electrónico.';
+      contactForm.reset();
+    } catch (error) {
+      status.textContent = error.message === 'rate'
+        ? (eu ? 'Bidalketa gehiegi jarraian. Itxaron minutu bat eta saiatu berriro.' : 'Demasiados envíos seguidos. Espera un minuto y vuelve a intentarlo.')
+        : error.message === 'invalid'
+        ? (eu ? 'Berrikusi eremuak eta pribatutasunaren onarpena.' : 'Revisa los campos y la aceptación de privacidad.')
+        : (eu ? 'Ezin izan dugu bidalketa baieztatu. Zure testua mantendu dugu. Saiatu geroago edo idatzi info@garabide.com helbidera.' : 'No hemos podido confirmar el envío. Hemos conservado tu texto. Inténtalo más tarde o escribe a info@garabide.com.');
+    } finally {
+      clearTimeout(timer); pending = false; button.disabled = false; button.innerHTML = originalButton; status.focus();
+    }
+  });
 }
