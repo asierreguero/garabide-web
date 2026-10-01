@@ -28,12 +28,12 @@ document.querySelectorAll('[data-year]').forEach(el => { el.textContent = String
 document.querySelectorAll('[data-interest]').forEach(link => {
   link.addEventListener('click', () => {
     const message = document.querySelector('#mensaje');
-    if (message && !message.value.trim()) message.value = `Me interesa una solución de ${link.dataset.interest.toLowerCase()} para mi empresa.\n\n`;
+    if (message && !message.value.trim()) message.value = document.documentElement.lang === "eu" ? `${link.dataset.interest}: nire enpresarako irtenbide bat interesatzen zait.\n\n` : `Me interesa una solución de ${link.dataset.interest.toLowerCase()} para mi empresa.\n\n`;
   });
 });
 // Native POST hands delivery and spam verification to FormSubmit. No fake success state.
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
   const next = contactForm.querySelector('[name="_next"]');
-  if (next && /^https?:$/.test(window.location.protocol)) next.value = new URL('gracias.html', window.location.href.split('#')[0]).href;
+  if (next && /^https?:$/.test(window.location.protocol)) next.value = new URL(document.documentElement.lang === 'eu' ? 'eskerrik-asko.html' : 'gracias.html', window.location.href.split('#')[0]).href;
 }
