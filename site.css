@@ -298,3 +298,15 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .faq-answer p{margin:0;max-width:65ch}
 @media(max-width:1100px){.faq-layout{gap:40px}.navigation{gap:18px}}
 @media(max-width:800px){.faq-layout{grid-template-columns:1fr;gap:32px}.faq-intro>p:not(.eyebrow){max-width:50ch}.faq-answer{padding-right:12px}.faq-item summary{gap:16px;padding:22px 0}}
+
+/* Inverted header and stronger contrast for the lavender outcome card. */
+.site-header{background:var(--ink);color:var(--cream);border-bottom-color:rgba(250,247,240,.2)}
+.site-header .garabide-logo,.site-header .navigation>a,.site-header .language-switch a{color:var(--cream)}
+.site-header .navigation>.nav-cta{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.site-header .navigation>.nav-cta:hover{background:var(--mist);border-color:var(--mist);color:var(--ink)}
+.site-header .language-switch a:hover{background:var(--cream);color:var(--ink)}
+.site-header .menu-toggle:not([hidden]){background:transparent;color:var(--cream);border-color:rgba(250,247,240,.55)}
+.site-header a:focus-visible,.site-header button:focus-visible{outline:2px solid var(--cream);outline-offset:5px}
+.outcome-word{color:var(--cream)}
+.outcome-word .brand-outlines path{stroke:var(--charcoal);stroke-width:18;stroke-linejoin:round;paint-order:stroke fill}
+.outcome .eyebrow,.outcome-bottom{font-weight:600}
