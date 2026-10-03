@@ -58,6 +58,7 @@ if (contactForm) {
       'error-callback': () => { captchaError(); return true; },
       'timeout-callback': captchaError
     });
+    if (!token) captchaStatus.textContent = captchaMessage;
   };
   const loadCaptcha = () => {
     if (window.turnstile) { renderCaptcha(); return; }
