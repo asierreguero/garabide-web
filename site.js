@@ -39,10 +39,47 @@ if (contactForm) {
   const button = contactForm.querySelector('.submit-button');
   const originalButton = button.innerHTML;
   let pending = false;
+  let widgetId;
+  let token = '';
+  let loading = false;
+  const captcha = contactForm.querySelector('.contact-captcha');
+  const captchaStatus = contactForm.querySelector('.captcha-status');
+  const captchaMessage = eu ? 'Osatu segurtasun-egiaztapena bidali aurretik.' : 'Completa la verificación de seguridad antes de enviar.';
+  const captchaError = () => {
+    token = '';
+    captchaStatus.textContent = eu ? 'Egiaztapena ez dago prest. Saiatu berriro edo idatzi info@garabide.com helbidera.' : 'La verificación no está lista. Vuelve a intentarlo o escribe a info@garabide.com.';
+  };
+  const renderCaptcha = () => {
+    if (widgetId !== undefined || !window.turnstile) return;
+    widgetId = window.turnstile.render(captcha, {
+      sitekey: captcha.dataset.sitekey, action: 'contact', theme: 'light', size: 'flexible', language: eu ? 'auto' : 'es',
+      callback: value => { token = value; captchaStatus.textContent = eu ? 'Segurtasun-egiaztapena osatuta.' : 'Verificación de seguridad completada.'; },
+      'expired-callback': () => { token = ''; captchaStatus.textContent = captchaMessage; },
+      'error-callback': () => { captchaError(); return true; },
+      'timeout-callback': captchaError
+    });
+  };
+  const loadCaptcha = () => {
+    if (window.turnstile) { renderCaptcha(); return; }
+    if (loading) return;
+    loading = true;
+    captchaStatus.textContent = eu ? 'Segurtasun-egiaztapena kargatzen…' : 'Cargando verificación de seguridad…';
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.onload = () => window.turnstile.ready(renderCaptcha);
+    script.onerror = () => { loading = false; script.remove(); captchaError(); };
+    document.head.appendChild(script);
+  };
+  // Load the security service only when someone starts using the contact form.
+  contactForm.addEventListener('focusin', loadCaptcha);
   button.disabled = false;
   contactForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (pending || !contactForm.reportValidity()) return;
+    if (!token) {
+      loadCaptcha(); status.hidden = false; status.textContent = captchaMessage; status.focus(); return;
+    }
     pending = true; button.disabled = true;
     button.textContent = eu ? 'Bidaltzen…' : 'Enviando…';
     status.hidden = false;
@@ -53,22 +90,24 @@ if (contactForm) {
     try {
       const response = await fetch(contactForm.action, {
         method: 'POST', headers: {'Content-Type':'application/json'}, signal:controller.signal,
-        body: JSON.stringify({nombre:form.get('nombre'),empresa:form.get('empresa'),email:form.get('email'),mensaje:form.get('mensaje'),website:form.get('website'),privacidad:form.has('privacidad'),lang:eu?'eu':'es'})
+        body: JSON.stringify({nombre:form.get('nombre'),empresa:form.get('empresa'),email:form.get('email'),mensaje:form.get('mensaje'),website:form.get('website'),privacidad:form.has('privacidad'),lang:eu?'eu':'es',turnstileToken:token})
       });
       const result = await response.json();
       if (!response.ok || result.ok !== true || result.code !== 'sent') {
-        throw new Error(response.status === 429 ? 'rate' : response.status === 400 ? 'invalid' : 'unavailable');
+        throw new Error(result.code === 'captcha' ? 'captcha' : response.status === 429 ? 'rate' : response.status === 400 ? 'invalid' : 'unavailable');
       }
       status.textContent = eu ? 'Eskerrik asko! Zure kontsulta bidali da. Posta elektronikoz erantzungo dizugu.' : '¡Gracias! Tu consulta se ha enviado. Te responderemos por correo electrónico.';
       contactForm.reset();
     } catch (error) {
-      status.textContent = error.message === 'rate'
+      status.textContent = error.message === 'captcha' ? captchaMessage : error.message === 'rate'
         ? (eu ? 'Bidalketa gehiegi jarraian. Itxaron minutu bat eta saiatu berriro.' : 'Demasiados envíos seguidos. Espera un minuto y vuelve a intentarlo.')
         : error.message === 'invalid'
         ? (eu ? 'Berrikusi eremuak eta pribatutasunaren onarpena.' : 'Revisa los campos y la aceptación de privacidad.')
         : (eu ? 'Ezin izan dugu bidalketa baieztatu. Zure testua mantendu dugu. Saiatu geroago edo idatzi info@garabide.com helbidera.' : 'No hemos podido confirmar el envío. Hemos conservado tu texto. Inténtalo más tarde o escribe a info@garabide.com.');
     } finally {
       clearTimeout(timer); pending = false; button.disabled = false; button.innerHTML = originalButton; status.focus();
+      token = '';
+      if (widgetId !== undefined && window.turnstile) window.turnstile.reset(widgetId);
     }
   });
 }

@@ -310,3 +310,16 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .outcome,.outcome-word{color:var(--charcoal)}
 .outcome-word .brand-outlines path{stroke:none}
 .outcome .eyebrow,.outcome-bottom{font-weight:600}
+
+/* Contact protection and newsletter preview. */
+.captcha-block{margin:20px 0;min-width:0}.contact-captcha{min-height:0;width:100%}.captcha-block .field__hint{font-size:.78rem;line-height:1.65;margin:8px 0}.captcha-block a{text-decoration:underline}
+.newsletter-section{background:var(--mist);color:var(--ink)}.newsletter-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:64px;align-items:center}.newsletter-section h2{font-size:clamp(2rem,3.5vw,3.2rem);line-height:1.15;margin:20px 0}.newsletter-section p{max-width:58ch}.newsletter-note{padding:32px;border:1px solid rgba(25,42,58,.3);border-radius:12px}.newsletter-note p{margin:18px 0 0}.newsletter-note .badge{background:var(--ink);color:var(--cream)}.site-header .text-link{color:var(--cream)}.legal-main{overflow-wrap:anywhere}.legal-main h2{font-family:var(--font-ui,Manrope,sans-serif);font-size:1.25rem}.legal-main ul{padding-left:1.4rem}.legal-main li{margin:10px 0}
+@media(max-width:800px){.newsletter-layout{grid-template-columns:1fr;gap:28px}.newsletter-note{padding:24px}.footer-bottom{flex-wrap:wrap;gap:20px}}
+/* Both example cards share illustration/body rows on desktop. */
+@media(min-width:801px){
+ .project-card{display:grid;grid-template-rows:310px 1fr}
+ .project-visual{min-height:0}
+ .project-meta{min-height:30px}
+ @supports(grid-template-rows:subgrid){.project-card{grid-row:span 2;grid-template-rows:subgrid;row-gap:0}.project-visual{min-height:280px}}
+}
+@media(min-width:801px){.project-body{display:flex;flex-direction:column}.project-body .project-interest{margin-top:auto;align-self:flex-start;padding-top:12px}}
