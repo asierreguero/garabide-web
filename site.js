@@ -67,7 +67,7 @@ if (contactForm) {
     const script = document.createElement('script');
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
     script.async = true;
-    script.onload = () => window.turnstile.ready(renderCaptcha);
+    script.onload = renderCaptcha;
     script.onerror = () => { loading = false; script.remove(); captchaError(); };
     document.head.appendChild(script);
   };
