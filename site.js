@@ -115,7 +115,7 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
         throw new Error(result.code === 'captcha' ? 'captcha' : response.status === 429 ? 'rate' : response.status === 400 ? 'invalid' : 'unavailable');
       }
       status.textContent = newsletter
-        ? (eu ? 'Eskerrik asko! Zure eskaera jaso dugu. Oraindik ez dugu buletinik edo baieztapen-mezurik bidaltzen. Zure eskaera kentzeko, idatzi info@garabide.com helbidera.' : '¡Gracias! Hemos recibido tu solicitud. Todavía no enviamos boletines ni correos de confirmación. Para retirar tu solicitud, escribe a info@garabide.com.')
+        ? (eu ? 'Eskerrik asko! Zure alta-eskaera prozesatu dugu. Ez da posta elektronikoz baieztatu behar. Baja emateko, idatzi info@garabide.com helbidera.' : '¡Gracias! Hemos procesado tu solicitud de alta. No necesitas confirmarla por email. Para darte de baja, escribe a info@garabide.com.')
         : (eu ? 'Eskerrik asko! Zure kontsulta bidali da. Posta elektronikoz erantzungo dizugu.' : '¡Gracias! Tu consulta se ha enviado. Te responderemos por correo electrónico.');
       contactForm.reset();
     } catch (error) {
