@@ -323,3 +323,10 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
  @supports(grid-template-rows:subgrid){.project-card{grid-row:span 2;grid-template-rows:subgrid;row-gap:0}.project-visual{min-height:280px}}
 }
 @media(min-width:801px){.project-body{display:flex;flex-direction:column}.project-body .project-interest{margin-top:auto;align-self:flex-start;padding-top:12px}}
+
+/* Clear transition between the opening and the services section. */
+#soluciones{border-top:2px solid var(--lavender)}
+.newsletter-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.newsletter-form{background:var(--cream);color:var(--ink);min-width:0}
+.newsletter-form .submit-button{width:100%}.newsletter-form .form-note{line-height:1.7}
+@media(max-width:800px){.newsletter-layout{grid-template-columns:1fr}.newsletter-form{padding:22px 18px}.newsletter-form .contact-captcha{max-width:100%}}
