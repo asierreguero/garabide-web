@@ -325,7 +325,12 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 @media(min-width:801px){.project-body{display:flex;flex-direction:column}.project-body .project-interest{margin-top:auto;align-self:flex-start;padding-top:12px}}
 
 /* Clear transition between the opening and the services section. */
-#soluciones{border-top:2px solid var(--lavender)}
+/* Keep the opening artwork clear of the next section. */
+.home-hero{padding-bottom:88px}
+#soluciones{border-top:0;position:relative;padding-top:76px}
+#soluciones::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(calc(100% - 96px),1200px);height:1px;background:var(--lavender)}
+@media(max-width:1050px){#soluciones::before{width:calc(100% - 64px)}}
+@media(max-width:800px){.home-hero{padding-bottom:64px}#soluciones{padding-top:56px}#soluciones::before{width:calc(100% - 40px)}}
 .newsletter-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
 .newsletter-form{background:var(--cream);color:var(--ink);min-width:0}
 .newsletter-form .submit-button{width:100%}.newsletter-form .form-note{line-height:1.7}
