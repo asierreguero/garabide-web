@@ -58,17 +58,26 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
   let loading = false;
   const captcha = contactForm.querySelector('.contact-captcha');
   const captchaStatus = contactForm.querySelector('.captcha-status');
+  const consent = contactForm.querySelector(newsletter ? '[name="newsletter-consent"]' : '[name="privacidad"]');
+  const captchaBlock = contactForm.querySelector('.captcha-block');
+  captchaBlock.hidden = !consent.checked;
   const captchaMessage = eu ? 'Osatu segurtasun-egiaztapena bidali aurretik.' : 'Completa la verificación de seguridad antes de enviar.';
   const captchaError = () => {
     token = '';
     captchaStatus.textContent = eu ? 'Egiaztapena ez dago prest. Saiatu berriro edo idatzi info@garabide.com helbidera.' : 'La verificación no está lista. Vuelve a intentarlo o escribe a info@garabide.com.';
   };
   const renderCaptcha = () => {
-    if (widgetId !== undefined || !window.turnstile) return;
+    if (!consent.checked || widgetId !== undefined || !window.turnstile) return;
     widgetSize = captcha.clientWidth < 300 ? 'compact' : 'flexible';
     widgetId = window.turnstile.render(captcha, {
       sitekey: captcha.dataset.sitekey, action: newsletter ? 'newsletter' : 'contact', theme: 'light', size: widgetSize, language: eu ? 'auto' : 'es',
-      callback: value => { token = value; captchaStatus.textContent = eu ? 'Segurtasun-egiaztapena osatuta.' : 'Verificación de seguridad completada.'; },
+      callback: value => {
+        if (!consent.checked) return;
+        token = value;
+        captchaStatus.textContent = newsletter
+          ? (eu ? 'Egiaztapena osatuta. Alta eskatzeko, sakatu «Izena eman».' : 'Verificación completada. Pulsa «Quiero apuntarme» para solicitar el alta.')
+          : (eu ? 'Egiaztapena osatuta. Kontsulta ez da oraindik bidali: sakatu «Bidali kontsulta».' : 'Verificación completada. Tu consulta aún no se ha enviado: pulsa «Enviar consulta».');
+      },
       'expired-callback': () => { token = ''; captchaStatus.textContent = captchaMessage; },
       'error-callback': () => { captchaError(); return true; },
       'timeout-callback': captchaError
@@ -76,16 +85,26 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
     if (!token) captchaStatus.textContent = captchaMessage;
   };
   const loadCaptcha = () => {
+    if (!consent.checked) return;
+    captchaBlock.hidden = false;
     if (window.turnstile) { renderCaptcha(); return; }
     if (loading) return;
     loading = true;
     captchaStatus.textContent = eu ? 'Segurtasun-egiaztapena kargatzen…' : 'Cargando verificación de seguridad…';
     loadTurnstile().then(renderCaptcha).catch(() => { loading = false; captchaError(); });
   };
-  // Load the security service only when someone starts using the contact form.
-  contactForm.addEventListener('focusin', loadCaptcha);
+  // Consent precedes verification; verification never means the form was sent.
+  const syncConsent = () => {
+    captchaBlock.hidden = !consent.checked;
+    if (consent.checked) { loadCaptcha(); return; }
+    token = '';
+    if (widgetId !== undefined && window.turnstile) window.turnstile.remove(widgetId);
+    widgetId = undefined;
+  };
+  consent.addEventListener('change', syncConsent);
+  if (consent.checked) loadCaptcha();
   window.addEventListener('resize', () => {
-    if (pending || widgetId === undefined || !window.turnstile) return;
+    if (pending || !consent.checked || widgetId === undefined || !window.turnstile) return;
     if ((captcha.clientWidth < 300 ? 'compact' : 'flexible') === widgetSize) return;
     window.turnstile.remove(widgetId); widgetId = undefined; token = ''; renderCaptcha();
   });
@@ -118,6 +137,7 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
         ? (eu ? 'Eskerrik asko! Zure alta-eskaera prozesatu dugu. Ez da posta elektronikoz baieztatu behar. Baja emateko, idatzi info@garabide.com helbidera.' : '¡Gracias! Hemos procesado tu solicitud de alta. No necesitas confirmarla por email. Para darte de baja, escribe a info@garabide.com.')
         : (eu ? 'Eskerrik asko! Zure kontsulta bidali da. Posta elektronikoz erantzungo dizugu.' : '¡Gracias! Tu consulta se ha enviado. Te responderemos por correo electrónico.');
       contactForm.reset();
+      syncConsent();
     } catch (error) {
       status.textContent = error.message === 'captcha' ? captchaMessage : error.message === 'rate'
         ? (eu ? 'Bidalketa gehiegi jarraian. Itxaron minutu bat eta saiatu berriro.' : 'Demasiados envíos seguidos. Espera un minuto y vuelve a intentarlo.')
