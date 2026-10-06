@@ -114,6 +114,9 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .future-layout p:not(.eyebrow) { font-size: .96rem; max-width: 58ch; }
 .future-layout .future-note { font-size: .78rem !important; margin: 25px 0 0; }
 .contact-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 85px; align-items: start; }
+.contact { background: var(--ink); color: var(--cream); --color-heading: var(--cream); --color-focus: var(--mist); }
+.contact .contact-email { color: var(--cream); }
+.contact .contact-form { background: var(--cream); color: var(--charcoal); --color-text: var(--charcoal); --color-heading: var(--ink); --color-focus: var(--ink); }
 .contact-copy h2 { margin-block: 27px 25px; }
 .contact-copy > p:not(.eyebrow) { font-size: .94rem; max-width: 37ch; }
 .contact-email { display: inline-flex; align-items: center; gap: 30px; font-size: 1.2rem; margin-top: 30px; text-decoration-thickness: 1px; text-underline-offset: 8px; }
