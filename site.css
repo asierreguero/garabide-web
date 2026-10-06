@@ -1,6 +1,21 @@
 /* GARABIDE: aplicación web de la guía de identidad. No incluye archivos de fuente. */
 
 :root { --ink: #192A3A; --lavender: #918CA8; --cream: #FAF7F0; --mist: #9ABAC5; --charcoal: #262626; }
+/* Shared timing for entering and leaving interactive hover states. */
+a, button, .button, summary {
+  transition: color 220ms ease, background-color 220ms ease,
+    border-color 220ms ease, box-shadow 220ms ease, opacity 220ms ease,
+    transform 220ms ease, text-decoration-color 220ms ease,
+    text-decoration-thickness 220ms ease;
+}
+.navigation > a:not(.button), .text-link, .footer-bottom a {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+}
+.navigation > a:not(.button):hover, .text-link:hover, .footer-bottom a:hover {
+  text-decoration-color: currentColor;
+}
 html { scroll-padding-top: 110px; }
 body { overflow-wrap: break-word; }
 .container { width: min(calc(100% - 96px), 1200px); }
@@ -359,3 +374,12 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .hero-baseline>span+span{border-left:1px solid var(--lavender)}
 .hero-baseline>span::before{content:"";width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--lavender)}
 @media(max-width:600px){.hero-baseline{grid-template-columns:1fr;gap:8px;margin-top:38px;padding-block:20px;font-size:.9rem}.hero-baseline>span{justify-content:flex-start;text-align:left;padding:6px 0}.hero-baseline>span+span{border-left:0}}
+
+.navigation > a:not(.button), .text-link, .footer-bottom a {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+}
+.navigation > a:not(.button):hover, .text-link:hover, .footer-bottom a:hover {
+  text-decoration-color: currentColor;
+}
