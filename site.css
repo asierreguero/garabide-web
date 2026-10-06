@@ -133,6 +133,20 @@ h2 { font-size: clamp(2rem,3.35vw,2.75rem); line-height: 1.15; letter-spacing: -
 .privacy-check { display: flex; align-items: flex-start; gap: 10px; font-size: .72rem; line-height: 1.65; font-weight: 400; cursor: pointer; margin: 24px 0; }
 .privacy-check input { flex-shrink: 0; margin: 2px 0 0; width: 18px; height: 18px; }
 .submit-button { width: 100%; justify-content: space-between; font-size: .85rem; }
+@keyframes contact-arrow-nudge {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(3px, -3px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #contacto .submit-button:not(:disabled):focus-visible .arrow-icon {
+    animation: contact-arrow-nudge .65s ease-in-out 2;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  #contacto .submit-button:not(:disabled):hover .arrow-icon {
+    animation: contact-arrow-nudge .65s ease-in-out 2;
+  }
+}
 .form-note { font-size: .64rem; margin: 13px 0 0; }
 .honeypot { display: none; }
 .site-footer { background: var(--ink); color: var(--cream); --color-heading: var(--cream); --color-focus: var(--mist); padding-block: 50px 22px; }
