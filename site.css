@@ -1,6 +1,19 @@
 /* GARABIDE: aplicación web de la guía de identidad. No incluye archivos de fuente. */
 
 :root { --ink: #192A3A; --lavender: #918CA8; --cream: #FAF7F0; --mist: #9ABAC5; --charcoal: #262626; }
+.service-page-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; align-items: start; }
+.service-hero h1 { font-size: clamp(2.4rem, 4.5vw, 4rem); line-height: 1.12; margin-top: 24px; }
+.service-heading-word { display: inline-block; max-width: 100%; }
+.service-heading-word .brand-outlines { display: inline-block; vertical-align: -.16em; }
+.service-hero .button { margin-top: 28px; }
+.service-page-content { border-top: 1px solid rgba(25,42,58,.16); }
+.service-page-content li { margin-bottom: 18px; }
+.service-related { display: flex; flex-wrap: wrap; gap: 24px 48px; margin-top: 24px; }
+.service-detail-link { margin-top: 18px; }
+.service-region { margin-top: 24px; font-size: .85rem; }
+.service-page-layout .button--cream { background: var(--cream); color: var(--ink); }
+.service-page-layout .button--cream:hover { background: var(--mist); }
+@media (max-width: 800px) { .service-page-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
 /* Shared timing for entering and leaving interactive hover states. */
 a, button, .button, summary {
   transition: color 220ms ease, background-color 220ms ease,
