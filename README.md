@@ -1,6 +1,6 @@
 # GARABIDE
 
-Web corporativa estática para GitHub Pages. HTML, CSS y JavaScript sin dependencias de compilación.
+Web corporativa estática para Cloudflare Pages. HTML, CSS y JavaScript sin dependencias de compilación.
 
 ## Contenido
 
@@ -8,7 +8,7 @@ Web corporativa estática para GitHub Pages. HTML, CSS y JavaScript sin dependen
 - `brand.css`: stylesheet de la identidad GARABIDE.
 - `site.css`: composición responsive y títulos en trazados de Butler Medium.
 - `site.js`: menú móvil, enlaces de interés y envío con mensajes localizados.
-- `privacidad.html`: información sobre contacto y proveedores; completar los datos legales del titular antes del lanzamiento definitivo.
+- `privacidad.html`: información sobre contacto y proveedores; datos del titular, tratamiento del contacto y proveedores actuales.
 - `gracias.html`: retorno tras el envío del formulario.
 - `CNAME`: dominio `garabide.com`.
 
