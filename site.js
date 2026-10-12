@@ -22,7 +22,7 @@ if (menuButton && navigation) {
       closeMenu(); menuButton.focus();
     }
   });
-  window.matchMedia('(max-width: 800px)').addEventListener('change', closeMenu);
+  window.matchMedia('(max-width: 1100px)').addEventListener('change', closeMenu);
 }
 document.querySelectorAll('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
 document.querySelectorAll('[data-interest]').forEach(link => {
@@ -47,6 +47,9 @@ function loadTurnstile() {
 }
 document.querySelectorAll('.contact-form').forEach(contactForm => {
   const newsletter = contactForm.classList.contains('newsletter-form');
+  const demo = contactForm.classList.contains('demo-form');
+  const quote = contactForm.classList.contains('product-quote-form');
+  const product = demo || quote;
   const eu = document.documentElement.lang === 'eu';
   const status = contactForm.querySelector('.form-status');
   const button = contactForm.querySelector('.submit-button');
@@ -70,11 +73,13 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
     if (!consent.checked || widgetId !== undefined || !window.turnstile) return;
     widgetSize = captcha.clientWidth < 300 ? 'compact' : 'flexible';
     widgetId = window.turnstile.render(captcha, {
-      sitekey: captcha.dataset.sitekey, action: newsletter ? 'newsletter' : 'contact', theme: 'light', size: widgetSize, language: eu ? 'auto' : 'es',
+      sitekey: captcha.dataset.sitekey, action: demo ? 'demo_download' : quote ? 'timetable_quote' : newsletter ? 'newsletter' : 'contact', theme: 'light', size: widgetSize, language: eu ? 'auto' : 'es',
       callback: value => {
         if (!consent.checked) return;
         token = value;
-        captchaStatus.textContent = newsletter
+        captchaStatus.textContent = product
+          ? (eu ? 'Egiaztapena osatuta. Jarraitzeko, sakatu eskaeraren botoia.' : 'Verificación completada. Pulsa el botón de solicitud para continuar.')
+          : newsletter
           ? (eu ? 'Egiaztapena osatuta. Alta eskatzeko, sakatu «Izena eman».' : 'Verificación completada. Pulsa «Quiero apuntarme» para solicitar el alta.')
           : (eu ? 'Egiaztapena osatuta. Kontsulta ez da oraindik bidali: sakatu «Bidali kontsulta».' : 'Verificación completada. Tu consulta aún no se ha enviado: pulsa «Enviar consulta».');
       },
@@ -125,15 +130,28 @@ document.querySelectorAll('.contact-form').forEach(contactForm => {
     try {
       const response = await fetch(contactForm.action, {
         method: 'POST', headers: {'Content-Type':'application/json'}, signal:controller.signal,
-        body: JSON.stringify(newsletter
+        body: JSON.stringify(product
+          ? {empresa:form.get('empresa'),email:form.get('email'),telefono:form.get('telefono'),mensaje:form.get('mensaje') || '',website:form.get('website'),privacidad:form.has('privacidad'),consentVersion:'2026-10-13.v1',lang:eu?'eu':'es',turnstileToken:token}
+          : newsletter
           ? {email:form.get('email'),website:form.get('website'),consent:form.has('newsletter-consent'),consentVersion:'2026-10-04.v1',lang:eu?'eu':'es',turnstileToken:token}
           : {nombre:form.get('nombre'),empresa:form.get('empresa'),email:form.get('email'),mensaje:form.get('mensaje'),website:form.get('website'),privacidad:form.has('privacidad'),lang:eu?'eu':'es',turnstileToken:token})
       });
       const result = await response.json();
-      if (!response.ok || result.ok !== true || result.code !== (newsletter ? 'registered' : 'sent')) {
+      if (!response.ok || result.ok !== true || result.code !== (demo ? 'download-ready' : newsletter ? 'registered' : 'sent')) {
         throw new Error(result.code === 'captcha' ? 'captcha' : response.status === 429 ? 'rate' : response.status === 400 ? 'invalid' : 'unavailable');
       }
-      status.textContent = newsletter
+      if (demo) {
+        if (!/^https:\/\/contacto\.garabide\.com\/products\/timetable\/file\/[a-f0-9]{64}$/.test(result.downloadUrl || '')) throw new Error('unavailable');
+        const downloadLink = contactForm.querySelector('.demo-download-link');
+        downloadLink.href = result.downloadUrl;
+        downloadLink.hidden = false;
+        contactForm.querySelector('.download-result').hidden = false;
+      }
+      status.textContent = demo
+        ? (eu ? 'Zure eskaera jaso dugu. Erabili beheko botoia instalatzailea deskargatzeko. Estekak 45 minutu iraungo du.' : 'Hemos recibido tus datos. Usa el botón de abajo para descargar el instalador. El enlace estará disponible durante 45 minutos.')
+        : quote
+        ? (eu ? 'Eskerrik asko! Aurrekontu-eskaera jaso dugu. Emandako datuen bidez jarriko gara zurekin harremanetan.' : '¡Gracias! Hemos recibido tu solicitud de presupuesto. Contactaremos contigo a través de los datos que nos has indicado.')
+        : newsletter
         ? (eu ? 'Eskerrik asko! Zure alta-eskaera prozesatu dugu. Ez da posta elektronikoz baieztatu behar. Baja emateko, idatzi info@garabide.com helbidera.' : '¡Gracias! Hemos procesado tu solicitud de alta. No necesitas confirmarla por email. Para darte de baja, escribe a info@garabide.com.')
         : (eu ? 'Eskerrik asko! Zure kontsulta bidali da. Posta elektronikoz erantzungo dizugu.' : '¡Gracias! Tu consulta se ha enviado. Te responderemos por correo electrónico.');
       contactForm.reset();
